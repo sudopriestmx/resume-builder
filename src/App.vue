@@ -3,29 +3,26 @@
     <div id="resume" class="d-flex">
       <div class="left-col">
         <div class="resume-section">
-          <h4 class="section-headline">About me</h4>
-          <div>Experienced Back-End developer passionate about performant APIs.</div>
+          <img :src="imageUrl" alt="profile picture" class="profile-pic" />
+          <h4 class="section-headline">{{ headlines[0] }}</h4>
+          <div>{{ introText }}</div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">Contact</h4>
+          <h4 class="section-headline">{{ headlines[1] }}</h4>
           <ul>
-            <li>+52(222)2938812</li>
-            <li>hi@joseortiz.dev</li>
+            <li>{{ contact.phone }}</li>
+            <li>{{ contact.email }}</li>
+            <li>{{ contact.address }}</li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">Skills</h4>
+          <h4 class="section-headline">{{ headlines[2] }}</h4>
           <ul>
-            <li>Node.JS</li>
-            <li>TypeScript</li>
-            <li>Fastify</li>
-            <li>AWS Lambda</li>
-            <li>MongoDB</li>
-            <li>Vue.js</li>
+            <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">Certifications</h4>
+          <h4 class="section-headline">{{ headlines[3] }}</h4>
           <ul>
             <li>Cert1</li>
             <li>Cert2</li>
@@ -33,39 +30,101 @@
         </div>
       </div>
       <div class="right-col">
-        <div class="personal-name">Jose Pablo Ortiz Lack</div>
-        <div class="personal-title">Senior Back-End Developer</div>
+        <div class="personal-name">{{ name }}</div>
+        <div class="personal-title">{{ title }}</div>
         <div class="resume-section">
-          <h4 class="section-headline">Experience</h4>
-          <div>Senior Back-End Developer - KYC Core</div>
-          <div>NaranjaX, Argentina (Remote), October 2021 - Present</div>
-          <ul>
-            <li>
-              Designed and implemented a system to acquire, validate, and update compliance
-              information from clients to offer them financial products.
-            </li>
-            <li>
-              Implemented a resilience mechanism during the data normalization process, allowing
-              retries during external information provider outages, reducing number of incomplete
-              normalization processes to almost 0.
-            </li>
-          </ul>
+          <h4 class="section-headline">{{ headlines[4] }}</h4>
+          <div v-for="(item, index) in experience" :key="index" class="inner-section">
+            <div>{{ item.title }}</div>
+            <div class="d-flex justify-content-between">
+              <div>{{ item.company }}, {{ item.location }}</div>
+              <div>{{ item.date }}</div>
+            </div>
+            <ul>
+              <li v-for="(desc, innerIndex) in item.description" :key="innerIndex">{{ desc }}</li>
+            </ul>
+          </div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">Education</h4>
-          <div>BSc. in Computer Technologies Engineering</div>
-          <div>Tecnológico de Monterrey, Puebla, 2012-2017</div>
-          <ul>
-            <li>
-              Graduation Project: Implementation of a Smart Light Network using the Zigbee Standard,
-              a Raspberry Pi, and the Raspbee module to manage the network.
-            </li>
-          </ul>
+          <h4 class="section-headline">{{ headlines[5] }}</h4>
+
+          <div v-for="(item, index) in education" :key="index" class="inner-section">
+            <div>{{ item.title }}</div>
+            <div class="d-flex justify-content-between">
+              <div>{{ item.university }}, {{ item.location }}</div>
+              <div>{{ item.date }}</div>
+            </div>
+            <ul>
+              <li v-for="(desc, innerIndex) in item.description" :key="innerIndex">{{ desc }}</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </main>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: 'Jose Pablo Ortiz Lack',
+      title: 'Senior Back-End Developer',
+      introText: 'Experienced Back-End developer passionate about performant APIs.',
+      imageUrl: '/profile_pic.jpeg',
+      headlines: ['About me', 'Contact', 'Skills', 'Certifications', 'Experience', 'Education'],
+      contact: {
+        phone: '+52(222)2938812',
+        email: 'hi@joseortiz.dev',
+        address: 'Placeholder address',
+      },
+      skills: ['Node.JS', 'TypeScript', 'Fastify', 'AWS Lambda', 'MongoDB', 'Vue.js'],
+      experience: [
+        {
+          title: 'Senior Back-End Developer - KYC',
+          company: 'NaranjaX',
+          location: 'Argentina (Remote)',
+          date: '2024 - Present',
+          description: [
+            'Designed and implemented a system to acquire, validate, and update compliance information from clients to offer them financial products.',
+          ],
+        },
+        {
+          title: 'Senior Back-End Developer - Onboarding',
+          company: 'NaranjaX',
+          location: 'Argentina (Remote)',
+          date: '2021 - 2024',
+          description: [
+            'Migrated API calls from a third party biometrics validation service from an OnPremise server to a cloud endpoint provided by them, reducing response times, accessing the latest version of their API, and reducing infraestructure costs.',
+            'Implemented a resilience mechanism during the data normalization process, allowing retries during external information provider outages, reducing number of incomplete normalization processes to almost 0.',
+          ],
+        },
+        {
+          title: 'Company Team Lead - Node.JS',
+          company: 'Distillery',
+          location: 'Mexico',
+          date: '2021 - Present',
+          description: [
+            'Manager of a team of 10 Node.JS developers, working on their growing, learning and development plan at Distillery, their clients, and professional careers, following up on thier day to day activities, and technical and non-technical learning.',
+            'Volunteer as Senior Technical Interviewer for Node.JS candidates of all levels.',
+          ],
+        },
+      ],
+      education: [
+        {
+          title: 'BSc. in Computer Technologies Engineering',
+          university: 'Tecnológico de Monterrey',
+          location: 'Puebla',
+          date: '2012 - 2017',
+          description: [
+            'Graduation Project: Implementation of a Smart Light Network using the Zigbee Standard, a Raspberry Pi, and the Raspbee module to manage the network.',
+          ],
+        },
+      ],
+    }
+  },
+}
+</script>
 
 <style scoped>
 #resume {
@@ -137,5 +196,21 @@
   padding-inline-start: 16px;
   margin-block-end: 0px;
   margin-block-start: 5px;
+}
+
+.profile-pic {
+  display: block;
+  width: 160px;
+  height: 160px;
+  border: 5px solid var(--highlight-color-left);
+  margin-bottom: 20px;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+}
+
+.inner-section {
+  margin-bottom: 20px;
 }
 </style>
