@@ -2,36 +2,19 @@
   <main class="container">
     <div id="resume" class="d-flex">
       <div class="left-col">
-        <div class="resume-section">
+        <ResumeSection>
           <img :src="imageUrl" alt="profile picture" class="profile-pic" />
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 0)">
-            {{ headlines[0] }}
-          </h4>
-
+          <SectionHeadline :headline="headlines[0]" @headline-edited="updateHeadline($event, 0)" />
           <div contenteditable="true" @blur="updateProperty($event, 'introText')">
             {{ introText }}
           </div>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 1)">
-            {{ headlines[1] }}
-          </h4>
-          <ul>
-            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'phone')">
-              {{ contact.phone }}
-            </li>
-            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'email')">
-              {{ contact.email }}
-            </li>
-            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'address')">
-              {{ contact.address }}
-            </li>
-          </ul>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 2)">
-            {{ headlines[2] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[1]" @headline-edited="updateHeadline($event, 1)" />
+          <ContactData :contact="contact" @edit="updateNestedProperty" />
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[2]" @headline-edited="updateHeadline($event, 2)" />
           <ul>
             <li
               v-for="(skill, index) in skills"
@@ -42,11 +25,9 @@
               {{ skill }}
             </li>
           </ul>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 3)">
-            {{ headlines[3] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[3]" @headline-edited="updateHeadline($event, 3)" />
           <ul>
             <li
               v-for="(certification, index) in certifications"
@@ -57,7 +38,7 @@
               {{ certification }}
             </li>
           </ul>
-        </div>
+        </ResumeSection>
       </div>
       <div class="right-col">
         <div class="personal-name" contenteditable="true" @blur="updateProperty($event, 'name')">
@@ -66,10 +47,8 @@
         <div class="personal-title" contenteditable="true" @blur="updateProperty($event, 'title')">
           {{ title }}
         </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 4)">
-            {{ headlines[4] }}
-          </h4>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[4]" @headline-edited="updateHeadline($event, 4)" />
           <div v-for="(item, index) in experience" :key="index" class="inner-section">
             <div contenteditable="true" @blur="updateExperience($event, 'title', index)">
               {{ item.title }}
@@ -98,11 +77,9 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 5)">
-            {{ headlines[5] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[5]" @headline-edited="updateHeadline($event, 5)" />
           <div v-for="(item, index) in education" :key="index" class="inner-section">
             <div contenteditable="true" @blur="updateEducation($event, 'title', index)">
               {{ item.title }}
@@ -131,14 +108,23 @@
               </li>
             </ul>
           </div>
-        </div>
+        </ResumeSection>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import ResumeSection from './components/ResumeSection.vue'
+import SectionHeadline from './components/SectionHeadline.vue'
+import ContactData from './components/ContactData.vue'
+
 export default {
+  components: {
+    ResumeSection,
+    SectionHeadline,
+    ContactData,
+  },
   data() {
     return {
       name: 'Jose Pablo Ortiz Lack',
@@ -198,8 +184,8 @@ export default {
     }
   },
   methods: {
-    updateHeadline(event, index) {
-      this.headlines[index] = event.target.innerText
+    updateHeadline(newValue, index) {
+      this.headlines[index] = newValue
     },
     updateProperty(event, key) {
       this[key] = event.target.innerText
@@ -245,29 +231,6 @@ export default {
   color: var(--text-color-right);
   width: 70%;
   padding: 30px;
-}
-
-.section-headline {
-  font-size: 20px;
-  font-weight: var(--headline-weight);
-  margin-bottom: 15px;
-  margin-top: 0;
-}
-
-.right-col .section-headline {
-  color: var(--highlight-color-right);
-}
-
-.left-col .section-headline {
-  border-bottom: 1px solid var(--highlight-color-left);
-  padding-bottom: 5px;
-  margin-right: -30px;
-  padding-right: 10px;
-  color: var(--highlight-color-left);
-}
-
-.resume-section {
-  margin-bottom: 30px;
 }
 
 .personal-name {
