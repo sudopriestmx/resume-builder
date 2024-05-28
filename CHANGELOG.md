@@ -7,6 +7,13 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Separated Resume Section, Section Title, and Contact Data sections of the CV into their own Vue components to facilitate readability and scalability.container
+- Added font-awesome icons to the Contact section.
+
+## [0.0.3]() (2024-05-27)
+
+### Added
+
 - Implemented functionality to be able to edit any field inside the CV, synchronizing the content with the internal state of the model with 2-way binding.
 
 ## [0.0.2]() (2024-05-27)
