@@ -4,58 +4,131 @@
       <div class="left-col">
         <div class="resume-section">
           <img :src="imageUrl" alt="profile picture" class="profile-pic" />
-          <h4 class="section-headline">{{ headlines[0] }}</h4>
-          <div>{{ introText }}</div>
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 0)">
+            {{ headlines[0] }}
+          </h4>
+
+          <div contenteditable="true" @blur="updateProperty($event, 'introText')">
+            {{ introText }}
+          </div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[1] }}</h4>
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 1)">
+            {{ headlines[1] }}
+          </h4>
           <ul>
-            <li>{{ contact.phone }}</li>
-            <li>{{ contact.email }}</li>
-            <li>{{ contact.address }}</li>
+            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'phone')">
+              {{ contact.phone }}
+            </li>
+            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'email')">
+              {{ contact.email }}
+            </li>
+            <li contenteditable="true" @blur="updateNestedProperty($event, 'contact', 'address')">
+              {{ contact.address }}
+            </li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[2] }}</h4>
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 2)">
+            {{ headlines[2] }}
+          </h4>
           <ul>
-            <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+            <li
+              v-for="(skill, index) in skills"
+              :key="index"
+              contenteditable="true"
+              @blur="updateNestedProperty($event, 'skills', index)"
+            >
+              {{ skill }}
+            </li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[3] }}</h4>
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 3)">
+            {{ headlines[3] }}
+          </h4>
           <ul>
-            <li>Cert1</li>
-            <li>Cert2</li>
+            <li
+              v-for="(certification, index) in certifications"
+              :key="index"
+              contenteditable="true"
+              @blur="updateNestedProperty($event, 'certifications', index)"
+            >
+              {{ certification }}
+            </li>
           </ul>
         </div>
       </div>
       <div class="right-col">
-        <div class="personal-name">{{ name }}</div>
-        <div class="personal-title">{{ title }}</div>
+        <div class="personal-name" contenteditable="true" @blur="updateProperty($event, 'name')">
+          {{ name }}
+        </div>
+        <div class="personal-title" contenteditable="true" @blur="updateProperty($event, 'title')">
+          {{ title }}
+        </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[4] }}</h4>
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 4)">
+            {{ headlines[4] }}
+          </h4>
           <div v-for="(item, index) in experience" :key="index" class="inner-section">
-            <div>{{ item.title }}</div>
+            <div contenteditable="true" @blur="updateExperience($event, 'title', index)">
+              {{ item.title }}
+            </div>
             <div class="d-flex justify-content-between">
-              <div>{{ item.company }}, {{ item.location }}</div>
-              <div>{{ item.date }}</div>
+              <div>
+                <span contenteditable="true" @blur="updateExperience($event, 'company', index)">
+                  {{ item.company }} </span
+                >,
+                <span contenteditable="true" @blur="updateExperience($event, 'location', index)">
+                  {{ item.location }}
+                </span>
+              </div>
+              <div contenteditable="true" @blur="updateExperience($event, 'date', index)">
+                {{ item.date }}
+              </div>
             </div>
             <ul>
-              <li v-for="(desc, innerIndex) in item.description" :key="innerIndex">{{ desc }}</li>
+              <li
+                v-for="(desc, innerIndex) in item.description"
+                :key="innerIndex"
+                contenteditable="true"
+                @blur="updateExperienceDescription($event, index, innerIndex)"
+              >
+                {{ desc }}
+              </li>
             </ul>
           </div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[5] }}</h4>
-
+          <h4 class="section-headline" contenteditable="true" @blur="updateHeadline($event, 5)">
+            {{ headlines[5] }}
+          </h4>
           <div v-for="(item, index) in education" :key="index" class="inner-section">
-            <div>{{ item.title }}</div>
+            <div contenteditable="true" @blur="updateEducation($event, 'title', index)">
+              {{ item.title }}
+            </div>
             <div class="d-flex justify-content-between">
-              <div>{{ item.university }}, {{ item.location }}</div>
-              <div>{{ item.date }}</div>
+              <div>
+                <span contenteditable="true" @blur="updateEducation($event, 'university', index)">
+                  {{ item.university }} </span
+                >,
+                <span contenteditable="true" @blur="updateEducation($event, 'location', index)">
+                  {{ item.location }}
+                </span>
+              </div>
+              <div contenteditable="true" @blur="updateEducation($event, 'date', index)">
+                {{ item.date }}
+              </div>
             </div>
             <ul>
-              <li v-for="(desc, innerIndex) in item.description" :key="innerIndex">{{ desc }}</li>
+              <li
+                v-for="(desc, innerIndex) in item.description"
+                :key="innerIndex"
+                contenteditable="true"
+                @blur="updateEducationDescription($event, index, innerIndex)"
+              >
+                {{ desc }}
+              </li>
             </ul>
           </div>
         </div>
@@ -79,6 +152,7 @@ export default {
         address: 'Placeholder address',
       },
       skills: ['Node.JS', 'TypeScript', 'Fastify', 'AWS Lambda', 'MongoDB', 'Vue.js'],
+      certifications: ['Cert1', 'Cert2'],
       experience: [
         {
           title: 'Senior Back-End Developer - KYC',
@@ -122,6 +196,29 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    updateHeadline(event, index) {
+      this.headlines[index] = event.target.innerText
+    },
+    updateProperty(event, key) {
+      this[key] = event.target.innerText
+    },
+    updateNestedProperty(event, key1, key2) {
+      this[key1][key2] = event.target.innerText
+    },
+    updateExperience(event, key, index) {
+      this.experience[index][key] = event.target.innerText
+    },
+    updateExperienceDescription(event, index1, index2) {
+      this.experience[index1]['description'][index2] = event.target.innerText
+    },
+    updateEducation(event, key, index) {
+      this.education[index][key] = event.target.innerText
+    },
+    updateEducationDescription(event, index1, index2) {
+      this.education[index1]['description'][index2] = event.target.innerText
+    },
   },
 }
 </script>
