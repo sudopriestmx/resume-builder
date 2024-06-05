@@ -1,12 +1,20 @@
 <template>
-  <h4 class="section-headline" contenteditable="true" @blur="notifyParent">
+  <h4 class="section-headline" :contenteditable="editing" @blur="notifyParent">
     {{ headline }}
   </h4>
 </template>
 
 <script>
 export default {
-  props: ['headline'],
+  props: {
+    headline: {
+      type: String,
+    },
+    editing: {
+      type: Boolean,
+      default: true,
+    },
+  },
   methods: {
     notifyParent(event) {
       this.$emit('headlineEdited', event.target.innerText)

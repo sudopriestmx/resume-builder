@@ -3,6 +3,12 @@
 THe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.6]() (2024-06-05)
+
+### Added
+
+- Added an 'Edit Mode' toggle and implemented edit mode functionality to the whole project.
+
 ## [0.0.5]() (2024-05-27)
 
 ### Added

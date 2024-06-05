@@ -2,19 +2,19 @@
   <ul class="contact">
     <li>
       <font-awesome-icon icon="fa-solid fa-phone" />
-      <span contenteditable="true" @blur="$emit('edit', $event, 'contact', 'phone')">
+      <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'phone')">
         {{ contact.phone }}
       </span>
     </li>
     <li>
       <font-awesome-icon icon="fa-solid fa-envelope" />
-      <span contenteditable="true" @blur="$emit('edit', $event, 'contact', 'email')">
+      <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'email')">
         {{ contact.email }}
       </span>
     </li>
     <li>
       <font-awesome-icon icon="fa-solid fa-house" />
-      <span contenteditable="true" @blur="$emit('edit', $event, 'contact', 'address')">
+      <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'address')">
         {{ contact.address }}
       </span>
     </li>
@@ -23,7 +23,15 @@
 
 <script>
 export default {
-  props: ['contact'],
+  props: {
+    contact: {
+      type: String,
+    },
+    editing: {
+      type: Boolean,
+      default: true,
+    },
+  },
 }
 </script>
 

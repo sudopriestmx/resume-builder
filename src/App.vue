@@ -1,25 +1,38 @@
 <template>
   <main class="container">
-    <div id="resume" class="d-flex">
+    <EditToggle @edit-mode-toggled="toggleEditMode" />
+    <div id="resume" class="d-flex" :class="{ 'edit-off': !editing }">
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" alt="profile picture" class="profile-pic" />
-          <SectionHeadline :headline="headlines[0]" @headline-edited="updateHeadline($event, 0)" />
-          <div contenteditable="true" @blur="updateProperty($event, 'introText')">
+          <SectionHeadline
+            :headline="headlines[0]"
+            @headline-edited="updateHeadline($event, 0)"
+            :editing="editing"
+          />
+          <div :contenteditable="editing" @blur="updateProperty($event, 'introText')">
             {{ introText }}
           </div>
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[1]" @headline-edited="updateHeadline($event, 1)" />
-          <ContactData :contact="contact" @edit="updateNestedProperty" />
+          <SectionHeadline
+            :headline="headlines[1]"
+            @headline-edited="updateHeadline($event, 1)"
+            :editing="editing"
+          />
+          <ContactData :contact="contact" @edit="updateNestedProperty" :editing="editing" />
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[2]" @headline-edited="updateHeadline($event, 2)" />
+          <SectionHeadline
+            :headline="headlines[2]"
+            @headline-edited="updateHeadline($event, 2)"
+            :editing="editing"
+          />
           <ul>
             <li
               v-for="(skill, index) in skills"
               :key="index"
-              contenteditable="true"
+              :contenteditable="editing"
               @blur="updateNestedProperty($event, 'skills', index)"
             >
               {{ skill }}
@@ -32,12 +45,16 @@
           />
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[3]" @headline-edited="updateHeadline($event, 3)" />
+          <SectionHeadline
+            :headline="headlines[3]"
+            @headline-edited="updateHeadline($event, 3)"
+            :editing="editing"
+          />
           <ul>
             <li
               v-for="(certification, index) in certifications"
               :key="index"
-              contenteditable="true"
+              :contenteditable="editing"
               @blur="updateNestedProperty($event, 'certifications', index)"
             >
               {{ certification }}
@@ -51,10 +68,18 @@
         </ResumeSection>
       </div>
       <div class="right-col">
-        <div class="personal-name" contenteditable="true" @blur="updateProperty($event, 'name')">
+        <div
+          class="personal-name"
+          :contenteditable="editing"
+          @blur="updateProperty($event, 'name')"
+        >
           {{ name }}
         </div>
-        <div class="personal-title" contenteditable="true" @blur="updateProperty($event, 'title')">
+        <div
+          class="personal-title"
+          :contenteditable="editing"
+          @blur="updateProperty($event, 'title')"
+        >
           {{ title }}
         </div>
         <ResumeSection>
@@ -62,6 +87,7 @@
             <SectionHeadline
               :headline="headlines[4]"
               @headline-edited="updateHeadline($event, 4)"
+              :editing="editing"
             />
             <EditButtons
               :show-remove-btn="false"
@@ -71,21 +97,24 @@
           </div>
           <div v-for="(item, index) in experience" :key="index" class="inner-section">
             <div class="d-flex justify-content-between">
-              <div contenteditable="true" @blur="updateExperience($event, 'title', index)">
+              <div :contenteditable="editing" @blur="updateExperience($event, 'title', index)">
                 {{ item.title }}
               </div>
               <EditButtons @remove-click="removeExperience(index)" :show-add-btn="false" />
             </div>
             <div class="d-flex justify-content-between">
               <div>
-                <span contenteditable="true" @blur="updateExperience($event, 'company', index)">
+                <span :contenteditable="editing" @blur="updateExperience($event, 'company', index)">
                   {{ item.company }} </span
                 >,
-                <span contenteditable="true" @blur="updateExperience($event, 'location', index)">
+                <span
+                  :contenteditable="editing"
+                  @blur="updateExperience($event, 'location', index)"
+                >
                   {{ item.location }}
                 </span>
               </div>
-              <div contenteditable="true" @blur="updateExperience($event, 'date', index)">
+              <div :contenteditable="editing" @blur="updateExperience($event, 'date', index)">
                 {{ item.date }}
               </div>
             </div>
@@ -93,7 +122,7 @@
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
-                contenteditable="true"
+                :contenteditable="editing"
                 @blur="updateExperienceDescription($event, index, innerIndex)"
               >
                 {{ desc }}
@@ -111,6 +140,7 @@
             <SectionHeadline
               :headline="headlines[5]"
               @headline-edited="updateHeadline($event, 5)"
+              :editing="editing"
             />
             <EditButtons
               :show-remove-btn="false"
@@ -120,21 +150,24 @@
           </div>
           <div v-for="(item, index) in education" :key="index" class="inner-section">
             <div class="d-flex justify-content-between">
-              <div contenteditable="true" @blur="updateEducation($event, 'title', index)">
+              <div :contenteditable="editing" @blur="updateEducation($event, 'title', index)">
                 {{ item.title }}
               </div>
               <EditButtons @remove-click="removeEducation(index)" :show-add-btn="false" />
             </div>
             <div class="d-flex justify-content-between">
               <div>
-                <span contenteditable="true" @blur="updateEducation($event, 'university', index)">
+                <span
+                  :contenteditable="editing"
+                  @blur="updateEducation($event, 'university', index)"
+                >
                   {{ item.university }} </span
                 >,
-                <span contenteditable="true" @blur="updateEducation($event, 'location', index)">
+                <span :contenteditable="editing" @blur="updateEducation($event, 'location', index)">
                   {{ item.location }}
                 </span>
               </div>
-              <div contenteditable="true" @blur="updateEducation($event, 'date', index)">
+              <div :contenteditable="editing" @blur="updateEducation($event, 'date', index)">
                 {{ item.date }}
               </div>
             </div>
@@ -142,7 +175,7 @@
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
-                contenteditable="true"
+                :contenteditable="editing"
                 @blur="updateEducationDescription($event, index, innerIndex)"
               >
                 {{ desc }}
@@ -165,13 +198,14 @@ import ResumeSection from './components/ResumeSection.vue'
 import SectionHeadline from './components/SectionHeadline.vue'
 import ContactData from './components/ContactData.vue'
 import EditButtons from './components/EditButtons.vue'
-
+import EditToggle from './components/EditToggle.vue'
 export default {
   components: {
     ResumeSection,
     SectionHeadline,
     ContactData,
     EditButtons,
+    EditToggle,
   },
   data() {
     return {
@@ -229,6 +263,7 @@ export default {
           ],
         },
       ],
+      editing: true,
     }
   },
   methods: {
@@ -276,6 +311,9 @@ export default {
     },
     removeEducation(index) {
       this.education.splice(index, 1)
+    },
+    toggleEditMode(isChecked) {
+      this.editing = isChecked
     },
   },
 }
