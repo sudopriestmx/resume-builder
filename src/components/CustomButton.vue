@@ -48,6 +48,18 @@ export default {
   background-color: var(--color-black);
 }
 
+.btn-primary-right {
+  background-color: var(--color-black);
+  color: #fff;
+  width: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+
+.btn-primary-right:hover {
+  background-color: var(--color-black);
+}
+
 .btn-secondary {
   background-color: #3943b7;
   color: #fff;

@@ -3,6 +3,17 @@
 THe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0]() (2024-06-05)
+
+### Added
+
+- Added saving configuration to the browser functionality to store current CV configuration in local storage.
+- Added exporting and importing configuration as JSON files.
+
+### Fixed
+
+- Fixed miscelaneous styling.
+
 ## [0.0.9]() (2024-06-05)
 
 ### Added

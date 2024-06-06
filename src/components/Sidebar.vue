@@ -15,6 +15,14 @@
   background-color: rgb(230, 230, 230);
 }
 
+.sidebar label {
+  margin-bottom: 10px;
+}
+
+.sidebar .btn {
+  margin-bottom: 10px;
+}
+
 .sidebar-section {
   background-color: #fff;
   border-radius: 4px;
@@ -25,9 +33,5 @@
 .sidebar-title {
   margin-bottom: 15px;
   font-weight: 600;
-}
-
-.sidebar label {
-  margin-bottom: 10px;
 }
 </style>

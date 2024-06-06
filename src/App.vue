@@ -1,13 +1,18 @@
 <template>
   <main class="container">
     <Sidebar>
-      <ToggleSwitch label="Edit mode" off-label="Export Mode" @switch-toggled="toggleEditMode" />
+      <ToggleSwitch
+        label="Edit mode"
+        off-label="Export Mode"
+        :toggle-active="editing"
+        @switch-toggled="toggleEditMode"
+      />
 
       <div class="sidebar-section" v-if="!editing">
         <SelectInput
           label="Resume format"
           :options="[
-            { name: 'A4', value: 'a4' },
+            { name: 'DIN A4', value: 'a4' },
             { name: 'Letter', value: 'letter' },
           ]"
           :default-option="resumeFormat"
@@ -75,7 +80,11 @@
       </div>
 
       <div class="sidebar-section" v-if="editing">
-        <ToggleSwitch label="Show photo" @switch-toggled="toggleImageDisplay" />
+        <ToggleSwitch
+          label="Show photo"
+          :toggle-active="showImage"
+          @switch-toggled="toggleImageDisplay"
+        />
 
         <SelectInput
           v-if="showImage"
@@ -90,8 +99,28 @@
 
         <ImgUpload v-if="showImage" @image-changed="imageUrl = $event" />
       </div>
+      <div class="sidebar-section" v-if="!editing">
+        <small style="display: block; margin-bottom: 10px">
+          A file with your configuration will be downloaded to your computer. You can upload it
+          whenever you want to restore your settings.
+        </small>
+
+        <CustomButton @click="downloadConfig" btn-type="secondary">
+          Download configuration
+        </CustomButton>
+
+        <CustomButton>
+          <label>
+            Upload configuration
+            <input type="file" accept=".json" @change="uploadConfig" />
+          </label>
+        </CustomButton>
+      </div>
     </Sidebar>
     <div class="resume-wrapper">
+      <CustomButton btn-type="primary-right" @click="saveConfig"
+        >Save configuration in browser</CustomButton
+      >
       <div
         id="resume"
         class="d-flex"
@@ -319,8 +348,21 @@ import PercentageInput from './components/PercentageInput.vue'
 import SelectInput from './components/SelectInput.vue'
 import ImgUpload from './components/ImgUpload.vue'
 import ExportPdf from './components/ExportPdf.vue'
+import CustomButton from './components/CustomButton.vue'
 
 export default {
+  created() {
+    const savedResume = localStorage.getItem('resume')
+
+    if (savedResume) {
+      try {
+        const resume = JSON.parse(savedResume)
+        this.loadIntoData(resume)
+      } catch (error) {
+        console.error('Error parsing saved resume configuration: ', error)
+      }
+    }
+  },
   components: {
     ResumeSection,
     SectionHeadline,
@@ -333,6 +375,7 @@ export default {
     SelectInput,
     ImgUpload,
     ExportPdf,
+    CustomButton,
   },
   data() {
     return {
@@ -478,26 +521,68 @@ export default {
     toggleImageDisplay(isChecked) {
       this.showImage = isChecked
     },
+    saveConfig() {
+      localStorage.setItem('resume', JSON.stringify(this.$data))
+    },
+    downloadConfig() {
+      const config = JSON.stringify(this.$data)
+      // Create a Blob with the JSON content
+      const blob = new Blob([config], { type: 'application/json' })
+
+      // Create an anchor element for download
+      const a = document.createElement('a')
+      a.download = 'resume_configuration.json'
+      a.href = window.URL.createObjectURL(blob)
+
+      // Trigger a click event to initiate the download
+      a.dispatchEvent(new MouseEvent('click'))
+    },
+    uploadConfig(event) {
+      const selectedFile = event.target.files[0]
+      if (!selectedFile) {
+        return
+      }
+      const reader = new FileReader()
+      reader.addEventListener('load', () => {
+        try {
+          const config = JSON.parse(reader.result)
+          this.loadIntoData(config)
+          // save in localStorage otherwise will be overwritten when created hook runs
+          localStorage.setItem('resume', JSON.stringify(this.$data))
+        } catch (error) {
+          console.error('Error parsing resume data:', error)
+        }
+      })
+      reader.readAsText(selectedFile)
+    },
+    loadIntoData(config) {
+      for (const key in config) {
+        if (Object.prototype.hasOwnProperty.call(this.$data, key)) {
+          this[key] = config[key]
+        }
+      }
+    },
   },
 }
 </script>
 
 <style scoped>
-.resume-wrapper {
-  width: 210mm;
-  margin-left: auto;
-}
-
 #resume {
   box-shadow:
     rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   /* DIN A4 standard paper size. commonly used for resumes
       For North America letter size use width: 8.5in; height: 11in; */
+  width: 210mm;
 }
 
 #resume.edit-off {
   height: 297mm;
+}
+
+.resume-wrapper {
+  width: 210mm;
+  margin-left: auto;
 }
 
 #resume.edit-off.letter-format {
@@ -513,7 +598,6 @@ export default {
 
 @media (min-width: 1600px) {
   .resume-wrapper {
-    margin-left: auto;
     margin-right: auto;
   }
 }
