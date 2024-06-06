@@ -1,19 +1,19 @@
 <template>
   <ul class="contact">
     <li>
-      <font-awesome-icon icon="fa-solid fa-phone" />
+      <font-awesome-icon icon="fa-solid fa-phone" :style="{ color: iconColor }" />
       <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'phone')">
         {{ contact.phone }}
       </span>
     </li>
     <li>
-      <font-awesome-icon icon="fa-solid fa-envelope" />
+      <font-awesome-icon icon="fa-solid fa-envelope" :style="{ color: iconColor }" />
       <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'email')">
         {{ contact.email }}
       </span>
     </li>
     <li>
-      <font-awesome-icon icon="fa-solid fa-house" />
+      <font-awesome-icon icon="fa-solid fa-house" :style="{ color: iconColor }" />
       <span :contenteditable="editing" @blur="$emit('edit', $event, 'contact', 'address')">
         {{ contact.address }}
       </span>
@@ -30,6 +30,10 @@ export default {
     editing: {
       type: Boolean,
       default: true,
+    },
+    iconColor: {
+      type: String,
+      default: '#ffffff',
     },
   },
 }
