@@ -3,6 +3,18 @@
 THe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8]() (2024-06-05)
+
+### Added
+
+- Added upload profile picture functionality.
+- Added option to hide profile picture.
+
+### Fixed
+
+- Structured sidebar configuration sections and added styling to them.
+- Renamed EditToggle to ToggleSwitch to make it reusable.
+
 ## [0.0.7]() (2024-06-05)
 
 ### Added

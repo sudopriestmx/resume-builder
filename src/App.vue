@@ -1,74 +1,87 @@
 <template>
   <main class="container">
     <Sidebar>
-      <EditToggle @edit-mode-toggled="toggleEditMode" />
-      <div><h3>Left column colors</h3></div>
-      <ColorInput
-        label="Highlight color"
-        :default-color="colors.left.highlight"
-        @color-changed="colors.left.highlight = $event"
-      />
-      <ColorInput
-        label="Background color"
-        :default-color="colors.left.background"
-        @color-changed="colors.left.background = $event"
-      />
-      <ColorInput
-        label="Text color"
-        :default-color="colors.left.text"
-        @color-changed="colors.left.text = $event"
-      />
+      <ToggleSwitch label="Edit mode" @switch-toggled="toggleEditMode" />
 
-      <div><h3>Right column colors</h3></div>
-      <ColorInput
-        label="Highlight color"
-        :default-color="colors.right.highlight"
-        @color-changed="colors.right.highlight = $event"
-      />
-      <ColorInput
-        label="Background color"
-        :default-color="colors.right.background"
-        @color-changed="colors.right.background = $event"
-      />
-      <ColorInput
-        label="Text color"
-        :default-color="colors.right.text"
-        @color-changed="colors.right.text = $event"
-      />
-      <div><h3>Options</h3></div>
-      <PercentageInput
-        label="Width of left column"
-        :min="20"
-        :max="80"
-        :current-value="widthLeft"
-        @percentage-changed="widthLeft = $event"
-      />
+      <div class="sidebar-section">
+        <div class="sidebar-title">Left column</div>
+        <ColorInput
+          label="Highlight color"
+          :default-color="colors.left.highlight"
+          @color-changed="colors.left.highlight = $event"
+        />
+        <ColorInput
+          label="Background color"
+          :default-color="colors.left.background"
+          @color-changed="colors.left.background = $event"
+        />
+        <ColorInput
+          label="Text color"
+          :default-color="colors.left.text"
+          @color-changed="colors.left.text = $event"
+        />
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Right column</div>
+        <ColorInput
+          label="Highlight color"
+          :default-color="colors.right.highlight"
+          @color-changed="colors.right.highlight = $event"
+        />
+        <ColorInput
+          label="Background color"
+          :default-color="colors.right.background"
+          @color-changed="colors.right.background = $event"
+        />
+        <ColorInput
+          label="Text color"
+          :default-color="colors.right.text"
+          @color-changed="colors.right.text = $event"
+        />
+      </div>
+      <div class="sidebar-section">
+        <PercentageInput
+          label="Width of left column"
+          :min="20"
+          :max="80"
+          :current-value="widthLeft"
+          @percentage-changed="widthLeft = $event"
+        />
 
-      <SelectInput
-        label="Headline thickness"
-        :options="[
-          { name: 'Thin', value: '300' },
-          { name: 'Medium', value: '400' },
-          { name: 'Thick', value: '600' },
-        ]"
-        :default-option="headlineWeight"
-        @update-selection="headlineWeight = $event"
-      />
+        <SelectInput
+          label="Headline thickness"
+          :options="[
+            { name: 'Thin', value: '300' },
+            { name: 'Medium', value: '400' },
+            { name: 'Thick', value: '600' },
+          ]"
+          :default-option="headlineWeight"
+          @update-selection="headlineWeight = $event"
+        />
+      </div>
 
-      <SelectInput
-        label="Photo shape"
-        :options="[
-          { name: 'Square', value: 'square' },
-          { name: 'Round', value: 'round' },
-        ]"
-        :default-option="imageShape"
-        @update-selection="imageShape = $event"
-      />
+      <div class="sidebar-section">
+        <ToggleSwitch label="Show photo" @switch-toggled="toggleImageDisplay" />
+
+        <SelectInput
+          v-if="showImage"
+          label="Photo shape"
+          :options="[
+            { name: 'Square', value: 'square' },
+            { name: 'Round', value: 'round' },
+          ]"
+          :default-option="imageShape"
+          @update-selection="imageShape = $event"
+        />
+
+        <ImgUpload v-if="showImage" @image-changed="imageUrl = $event" />
+      </div>
     </Sidebar>
     <div id="resume" class="d-flex" :class="{ 'edit-off': !editing }" :style="cssVariables">
       <div class="left-col" :style="{ width: percentageWidthLeft }">
         <ResumeSection>
           <img
+            v-if="showImage"
             :src="imageUrl"
             alt="profile picture"
             class="profile-pic"
@@ -272,22 +285,24 @@ import ResumeSection from './components/ResumeSection.vue'
 import SectionHeadline from './components/SectionHeadline.vue'
 import ContactData from './components/ContactData.vue'
 import EditButtons from './components/EditButtons.vue'
-import EditToggle from './components/EditToggle.vue'
+import ToggleSwitch from './components/ToggleSwitch.vue'
 import Sidebar from './components/Sidebar.vue'
 import ColorInput from './components/ColorInput.vue'
 import PercentageInput from './components/PercentageInput.vue'
 import SelectInput from './components/SelectInput.vue'
+import ImgUpload from './components/ImgUpload.vue'
 export default {
   components: {
     ResumeSection,
     SectionHeadline,
     ContactData,
     EditButtons,
-    EditToggle,
+    ToggleSwitch,
     Sidebar,
     ColorInput,
     PercentageInput,
     SelectInput,
+    ImgUpload,
   },
   data() {
     return {
@@ -361,6 +376,7 @@ export default {
       widthLeft: 30,
       imageShape: 'round',
       headlineWeight: '400',
+      showImage: true,
     }
   },
   computed: {
@@ -427,6 +443,9 @@ export default {
     },
     toggleEditMode(isChecked) {
       this.editing = isChecked
+    },
+    toggleImageDisplay(isChecked) {
+      this.showImage = isChecked
     },
   },
 }
