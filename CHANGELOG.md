@@ -3,6 +3,16 @@
 THe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.9]() (2024-06-05)
+
+### Added
+
+- Added export to PDF functionality using [html2pdf.js](https://ekoopmans.github.io/html2pdf.js/).
+
+### Fixed
+
+- Added 'Export Mode' Label to toggle.
+
 ## [0.0.8]() (2024-06-05)
 
 ### Added
