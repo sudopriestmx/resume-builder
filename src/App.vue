@@ -97,8 +97,6 @@
           :default-option="imageShape"
           @update-selection="imageShape = $event"
         />
-
-        <ImgUpload v-if="showImage" @image-changed="imageUrl = $event" />
       </div>
       <div class="sidebar-section" v-if="!editing">
         <small style="display: block; margin-bottom: 10px">
@@ -130,12 +128,13 @@
       >
         <div class="left-col" :style="{ width: percentageWidthLeft }">
           <ResumeSection>
-            <img
+            <ImgUpload
               v-if="showImage"
-              :src="imageUrl"
-              alt="profile picture"
-              class="profile-pic"
-              :class="{ circle: imageShape == 'round' }"
+              @image-changed="imageUrl = $event"
+              :img-src="imageUrl"
+              :img-shape="imageShape"
+              :border-color="colors.left.highlight"
+              :text-color="colors.left.text"
             />
             <SectionHeadline
               :headline="headlines[0]"
