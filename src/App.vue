@@ -20,6 +20,7 @@
         />
 
         <ExportPdf :resume-format="resumeFormat" />
+        <ExportHtml />
       </div>
 
       <div class="sidebar-section" v-if="editing">
@@ -348,6 +349,7 @@ import PercentageInput from './components/PercentageInput.vue'
 import SelectInput from './components/SelectInput.vue'
 import ImgUpload from './components/ImgUpload.vue'
 import ExportPdf from './components/ExportPdf.vue'
+import ExportHtml from './components/ExportHtml.vue'
 import CustomButton from './components/CustomButton.vue'
 
 export default {
@@ -375,6 +377,7 @@ export default {
     SelectInput,
     ImgUpload,
     ExportPdf,
+    ExportHtml,
     CustomButton,
   },
   data() {

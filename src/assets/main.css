@@ -12,6 +12,12 @@ body {
   max-width: 1200px;
 }
 
+.html-export-container {
+  display: flex;
+  margin-top: 50px;
+  justify-content: center;
+}
+
 .d-flex {
   display: flex;
 }

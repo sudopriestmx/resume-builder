@@ -3,6 +3,12 @@
 THe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0]() (2024-06-11)
+
+### Added
+
+- Added option to export resume in HTML format for better machine readability and for easier text selection (PDF export currently supports exporting to image only).
+
 ## [0.1.0]() (2024-06-05)
 
 ### Added

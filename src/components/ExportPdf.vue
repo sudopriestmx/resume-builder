@@ -6,7 +6,6 @@
 
 <script>
 import CustomButton from './CustomButton.vue'
-//import html2pdf from 'html2pdf.js'
 export default {
   components: {
     CustomButton,
@@ -33,6 +32,7 @@ export default {
       }
       const resume = document.getElementById('resume')
       // eslint-disable-next-line no-undef
+      // Loaded via CDN from: https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js
       html2pdf().set(pdfConfig).from(resume).save()
     },
   },
